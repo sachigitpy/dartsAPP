@@ -20,8 +20,8 @@ fetch("cities_japan.json")
   });
 
 function dropPin(city) {
-  const targetLat = city.lat;
-  const targetLng = city.lng;
+  const targetLat = Number(city.lat);
+  const targetLng = Number(city.lng);
 
   let startLat = targetLat + 15;
 
