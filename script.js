@@ -19,32 +19,43 @@ fetch("cities_japan.json")
     console.log("都市データ読み込み完了:", cities.length);
   });
 
+/* ===== ピン落下アニメーション ===== */
 function dropPin(city) {
   const targetLat = Number(city.lat);
   const targetLng = Number(city.lng);
 
-  const startLat = targetLat + 15;
+  // 落下開始位置（画面内でちゃんと見える距離）
+  const startLat = targetLat + 2;
 
+  // 既存ピン削除
   if (currentMarker) {
     map.removeLayer(currentMarker);
   }
 
+  // 先に視点を固定（ここ超重要）
+  map.setView([targetLat, targetLng], 7, { animate: false });
+
+  // 上空にピン生成
   currentMarker = L.circleMarker(
     [startLat, targetLng],
-    { radius: 10, color: "red" }
+    {
+      radius: 10,
+      color: "red",
+      fillColor: "red",
+      fillOpacity: 1
+    }
   ).addTo(map);
 
-  map.panTo([startLat, targetLng], { animate: false });
   console.log("drop start", startLat, "→", targetLat);
 
-  const duration = 800; // ms
+  const duration = 1200; // ms
   const startTime = performance.now();
 
   function animate(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
 
-    // easeIn
+    // ease-in（重力っぽく）
     const eased = progress * progress;
 
     const lat =
@@ -55,8 +66,8 @@ function dropPin(city) {
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
+      // 着地
       currentMarker.setLatLng([targetLat, targetLng]);
-      map.setView([targetLat, targetLng], 10);
 
       currentMarker
         .bindPopup(`📍 ${city.city_ja}<br>${city.admin_name_ja}`)
@@ -66,7 +77,6 @@ function dropPin(city) {
 
   requestAnimationFrame(animate);
 }
-
 
 /* ===== ボタンクリック ===== */
 button.addEventListener("click", () => {
