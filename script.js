@@ -38,28 +38,49 @@ function dropPin(city) {
   let step = 0;
   const steps = 25;
 
+function dropPin(city) {
+  const targetLat = city.lat;
+  const targetLng = city.lng;
+
+  let startLat = targetLat + 4;
+
+  if (currentMarker) {
+    map.removeLayer(currentMarker);
+  }
+
+  currentMarker = L.marker([startLat, targetLng]).addTo(map);
+  map.setView([startLat, targetLng], 6);
+
+  let step = 0;
+  const steps = 40;
+
   const dropInterval = setInterval(() => {
     step++;
-  
+
     const progress = step / steps;
-    const eased = progress * progress;
-  
+    const eased = 1 - Math.pow(1 - progress, 2);
+
     const lat =
       startLat - (startLat - targetLat) * eased;
-  
+
     currentMarker.setLatLng([lat, targetLng]);
-  
+
     if (step >= steps) {
       clearInterval(dropInterval);
-  
+
       currentMarker.setLatLng([targetLat, targetLng]);
-      map.setView([targetLat, targetLng], 10);
-  
+
+      setTimeout(() => {
+        map.setView([targetLat, targetLng], 10);
+      }, 100);
+
       currentMarker
         .bindPopup(`📍 ${city.city_ja}<br>${city.admin_name_ja}`)
         .openPopup();
     }
-  }, 30);
+  }, 40);
+}
+
 
 
 /* ===== ボタンクリック ===== */
