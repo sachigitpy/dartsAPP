@@ -29,4 +29,13 @@ button.addEventListener("click", () => {
       ${city.admin_name_ja}
     `;
   }, 1000);
+
+ // 地図を初期表示（日本の中心）
+ const map = L.map("map").setView([36.0, 138.0], 5);
+
+ // 地図タイル
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors"
+  }).addTo(map);
+
 });
