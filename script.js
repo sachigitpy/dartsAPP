@@ -23,7 +23,7 @@ function dropPin(city) {
   const targetLat = city.lat;
   const targetLng = city.lng;
 
-  let startLat = targetLat + 4;
+  let startLat = targetLat + 15;
 
   if (currentMarker) {
     map.removeLayer(currentMarker);
