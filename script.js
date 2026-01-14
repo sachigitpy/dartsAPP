@@ -29,7 +29,11 @@ function dropPin(city) {
     map.removeLayer(currentMarker);
   }
 
-  currentMarker = L.marker([startLat, targetLng]).addTo(map);
+  currentMarker = L.circleMarker(
+    [startLat, targetLng],
+    { radius: 10, color: "red" }
+  ).addTo(map);
+
   map.panTo([startLat, targetLng], { animate: false });
 
   const duration = 800; // ms
