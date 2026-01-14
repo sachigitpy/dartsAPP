@@ -41,24 +41,27 @@ function dropPin(city) {
 
   const dropInterval = setInterval(() => {
     step++;
+  
+    const progress = step / steps;
+    const eased = progress * progress;
+  
     const lat =
-      startLat - ((startLat - targetLat) * step) / steps;
-
+      startLat - (startLat - targetLat) * eased;
+  
     currentMarker.setLatLng([lat, targetLng]);
-
+  
     if (step >= steps) {
       clearInterval(dropInterval);
-
-      // 最終位置に固定
+  
       currentMarker.setLatLng([targetLat, targetLng]);
       map.setView([targetLat, targetLng], 10);
-
+  
       currentMarker
         .bindPopup(`📍 ${city.city_ja}<br>${city.admin_name_ja}`)
         .openPopup();
     }
   }, 30);
-}
+
 
 /* ===== ボタンクリック ===== */
 button.addEventListener("click", () => {
