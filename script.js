@@ -19,25 +19,6 @@ fetch("cities_japan.json")
     console.log("都市データ読み込み完了:", cities.length);
   });
 
-/* ===== ピン表示関数 ===== 
-function showCityOnMap(city) {
-  // 地図サイズ再計算（これが重要）
-  map.invalidateSize();
-
-  if (currentMarker) {
-    map.removeLayer(currentMarker);
-  }
-
-  currentMarker = L.marker([city.lat, city.lng]).addTo(map);
-
-  currentMarker
-    .bindPopup(`📍 ${city.city_ja}`)
-    .openPopup();
-
-  map.setView([city.lat, city.lng], 10);
-}
-*/
-
 function dropPin(city) {
   const targetLat = city.lat;
   const targetLng = city.lng;
