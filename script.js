@@ -24,59 +24,43 @@ function dropPin(city) {
   const targetLat = Number(city.lat);
   const targetLng = Number(city.lng);
 
-  // 落下開始位置（画面内でちゃんと見える距離）
-  const startLat = targetLat + 2;
+  const startLat = targetLat + 20; // ← 無茶な高さ
+  const steps = 60;
 
-  // 既存ピン削除
   if (currentMarker) {
     map.removeLayer(currentMarker);
   }
 
-  // 先に視点を固定（ここ超重要）
-  map.setView([targetLat, targetLng], 7, { animate: false });
+  // ズームを極端に引く
+  map.setView([targetLat, targetLng], 4, { animate: false });
 
-  // 上空にピン生成
   currentMarker = L.circleMarker(
     [startLat, targetLng],
-    {
-      radius: 10,
-      color: "red",
-      fillColor: "red",
-      fillOpacity: 1
-    }
+    { radius: 12, color: "red", fillOpacity: 1 }
   ).addTo(map);
 
-  console.log("drop start", startLat, "→", targetLat);
+  let step = 0;
 
-  const duration = 1200; // ms
-  const startTime = performance.now();
-
-  function animate(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-
-    // ease-in（重力っぽく）
-    const eased = progress * progress;
+  const interval = setInterval(() => {
+    step++;
 
     const lat =
-      startLat - (startLat - targetLat) * eased;
+      startLat - (startLat - targetLat) * (step / steps);
 
     currentMarker.setLatLng([lat, targetLng]);
 
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      // 着地
-      currentMarker.setLatLng([targetLat, targetLng]);
+    console.log("lat:", lat);
+
+    if (step >= steps) {
+      clearInterval(interval);
 
       currentMarker
-        .bindPopup(`📍 ${city.city_ja}<br>${city.admin_name_ja}`)
+        .bindPopup(`📍 ${city.city_ja}`)
         .openPopup();
     }
-  }
-
-  requestAnimationFrame(animate);
+  }, 100);
 }
+
 
 /* ===== ボタンクリック ===== */
 button.addEventListener("click", () => {
