@@ -23,44 +23,43 @@ function dropPin(city) {
   const targetLat = Number(city.lat);
   const targetLng = Number(city.lng);
 
-  let startLat = targetLat + 15;
+  const startLat = targetLat + 15;
 
   if (currentMarker) {
     map.removeLayer(currentMarker);
   }
 
   currentMarker = L.marker([startLat, targetLng]).addTo(map);
- // map.setView([startLat, targetLng], 6);
   map.panTo([startLat, targetLng], { animate: false });
 
-  let step = 0;
-  const steps = 40;
+  const duration = 800; // ms
+  const startTime = performance.now();
 
-  const dropInterval = setInterval(() => {
-    step++;
+  function animate(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
 
-    const progress = step / steps;
-    const eased = 1 - Math.pow(1 - progress, 2);
+    // easeIn
+    const eased = progress * progress;
 
     const lat =
       startLat - (startLat - targetLat) * eased;
 
     currentMarker.setLatLng([lat, targetLng]);
 
-    if (step >= steps) {
-      clearInterval(dropInterval);
-
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
       currentMarker.setLatLng([targetLat, targetLng]);
-
-      setTimeout(() => {
-        map.setView([targetLat, targetLng], 10);
-      }, 100);
+      map.setView([targetLat, targetLng], 10);
 
       currentMarker
         .bindPopup(`📍 ${city.city_ja}<br>${city.admin_name_ja}`)
         .openPopup();
     }
-  }, 40);
+  }
+
+  requestAnimationFrame(animate);
 }
 
 
