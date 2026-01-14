@@ -33,8 +33,7 @@ function dropPin(city) {
 
   // マーカー生成（まず上空）
   currentMarker = L.marker([startLat, targetLng]).addTo(map);
-
-  map.setView([targetLat, targetLng], 6);
+  map.setView([startLat, targetLng], 6);
 
   let step = 0;
   const steps = 25;
