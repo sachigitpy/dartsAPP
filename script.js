@@ -63,7 +63,6 @@ function dropPin(city) {
 }
 
 
-
 /* ===== ボタンクリック ===== */
 button.addEventListener("click", () => {
   if (cities.length === 0) {
