@@ -35,6 +35,7 @@ function dropPin(city) {
   ).addTo(map);
 
   map.panTo([startLat, targetLng], { animate: false });
+  console.log("drop start", startLat, "→", targetLat);
 
   const duration = 800; // ms
   const startTime = performance.now();
