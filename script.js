@@ -21,11 +21,15 @@ fetch("cities_japan.json")
 
 /* ===== ピン表示関数 ===== */
 function showCityOnMap(city) {
+  // 地図サイズ再計算（これが重要）
+  map.invalidateSize();
+
   if (currentMarker) {
     map.removeLayer(currentMarker);
   }
 
   currentMarker = L.marker([city.lat, city.lng]).addTo(map);
+
   currentMarker
     .bindPopup(`📍 ${city.city_ja}`)
     .openPopup();
