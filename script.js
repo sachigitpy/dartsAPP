@@ -23,25 +23,6 @@ function dropPin(city) {
   const targetLat = city.lat;
   const targetLng = city.lng;
 
-  // 上空スタート（かなり北）
-  let startLat = targetLat + 8;
-
-  // 既存ピン削除
-  if (currentMarker) {
-    map.removeLayer(currentMarker);
-  }
-
-  // マーカー生成（まず上空）
-  currentMarker = L.marker([startLat, targetLng]).addTo(map);
-  map.setView([startLat, targetLng], 6);
-
-  let step = 0;
-  const steps = 25;
-
-function dropPin(city) {
-  const targetLat = city.lat;
-  const targetLng = city.lng;
-
   let startLat = targetLat + 4;
 
   if (currentMarker) {
