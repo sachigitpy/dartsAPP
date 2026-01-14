@@ -30,7 +30,8 @@ function dropPin(city) {
   }
 
   currentMarker = L.marker([startLat, targetLng]).addTo(map);
-  map.setView([startLat, targetLng], 6);
+ // map.setView([startLat, targetLng], 6);
+  map.panTo([startLat, targetLng], { animate: false });
 
   let step = 0;
   const steps = 40;
