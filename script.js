@@ -19,7 +19,7 @@ fetch("cities_japan.json")
     console.log("都市データ読み込み完了:", cities.length);
   });
 
-/* ===== ピン表示関数 ===== */
+/* ===== ピン表示関数 ===== 
 function showCityOnMap(city) {
   // 地図サイズ再計算（これが重要）
   map.invalidateSize();
@@ -36,6 +36,7 @@ function showCityOnMap(city) {
 
   map.setView([city.lat, city.lng], 10);
 }
+*/
 
 function dropPin(city) {
   const targetLat = city.lat;
